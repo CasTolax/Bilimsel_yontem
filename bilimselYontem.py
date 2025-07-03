@@ -60,7 +60,15 @@ class BilimMain:
         input("Açıklama: ")  # sor kullanilmiyor
 
         gozlem = input("Yapılan gözlem bilgisi: ")
-        deney = input("Yapılan deney numarası (başarı puanı 0-10): ")
+        deney = input(int("Yapılan deney numarası (başarı puanı 0-10):"))
+        
+        agrup = input(float("A grubunun deneyinde gerçekleşen doğruluk payı(0-100) =")) #yapılan deneyin başarı raporu
+        bgrup = input(float("B grubunun deneyinde gerçekleşen doğruluk payı(0-100) ="))
+        sonuchesapla = (agrup + bgrup)/2
+        
+        """ bunun yapılmasının sebebi iki grubun da deneyin nasıl gerçekleştiğini,doğrulanabilirlik durumunu sınamaktır,
+        ki bu da aslına bakılırsa oldukça verim alınabilir."""
+        
 
         try:
             deney = float(deney)
@@ -68,7 +76,10 @@ class BilimMain:
             veritoplama_data = {
                 "Gözlem Bilgisi": [gozlem],
                 "Başarı Puanı": [deney],
-                "Hesaplanan Puan": [hesap]
+                "Hesaplanan Puan": [hesap],
+                "A grubu deney başarısı" : [agrup],
+                "B grubu deney başarısı" : [bgrup],
+                "2 Grubun deney doğruluğu(hesaplanmış)" : [sonuchesapla]
             }
 
             df = pd.DataFrame(veritoplama_data)
@@ -98,6 +109,11 @@ class BilimMain:
                 "Verinin Doğruluğu": [veri],
                 "Veri Kaynakları": [verikaynak]
             }
+            enyuksekdeger1 = max(gozlem,tahminle,veri) #en yüksek değeri vericek
+            enkucukdeger2 = min(gozlem,tahminle,veri) # en kucuk değeri vericek
+            print(f"en büyük değerler = {enyuksekdeger1}")
+            print(f"en küçük değerler = {enkucukdeger2}")
+            
 
             df = pd.DataFrame(tutarlilik_data)
             print(" -- Tutarlılık Tablosu --")
@@ -110,7 +126,14 @@ class BilimMain:
         global data
 
         print(" -- Hipotez Kurma --")
-        print("Lütfen her şeyi kesin kurama ulaştıracak şekilde yazınız.")
+        print("""Lütfen her şeyi kesin kurama ulaştıracak şekilde yazınız.her işlemde ve her alanda gerçek sonuçlarla rapor,veri
+              ve benzeri kullanılabilir.ayrıca sayısal veri girmeyiniz tamamen alfabetik olucak şekilde yapınız,ve idda,yorum,tahmin gibi alanlarda rastgele 
+              işlemler yapmayınız herşey mantık alanında olmasına dikkat edin!
+              
+                 bilimsel tespit = -yanlışlanabilir olması
+                                 -tekrarlanabilir olması
+                                 -somut olmalıdır
+                aksi takdirde bilimdışı veya sözdebilim sınıfına girer.""")
 
         yapan = input("Araştırmayı yapan kişi: ")
         ana_dusunce = input("Hipotezin ana düşüncesi: ")
@@ -119,6 +142,8 @@ class BilimMain:
         gozlem = input("Gözlemler: ")
         tahmin = input("Tahminler: ")
         idda = input("Yapılan iddialar: ")
+        yorum = input("yorumlar:")
+        notiste = input("eklenecek not: ")
 
         data = {
             "Araştırmayı Yürüten": [yapan],
@@ -127,7 +152,10 @@ class BilimMain:
             "Araştırma (Kaynak ile)": [arastirma],
             "Gözlemler": [gozlem],
             "Tahminler": [tahmin],
-            "Ortaya Atılan İddialar": [idda]
+            "Ortaya Atılan İddialar": [idda],
+            "yorumlar" : [yorum],
+            "Notlar" : [notiste]
+            
         }
 
         print("Yapılandırılıyor...")
@@ -138,6 +166,10 @@ class BilimMain:
 
     def sonuc(self):
         print(" -- Veri Sonucu --")
+        
+        #enyuksekdeger = max(tutarlilik_data) ---#çalışabilecek kodlar (opsiyonel)
+        #enkucukdeger = min(tutarlilik_data)
+        #print(enyuksekdeger, enkucukdeger)
 
         df = pd.DataFrame(veritoplama_data)
         df1 = pd.DataFrame(tutarlilik_data)
