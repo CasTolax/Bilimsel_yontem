@@ -6,11 +6,11 @@ veritoplama_data = {}
 tutarlilik_data = {}
 data = {}
 
-data_file = "data.txt"
-veritoplama_file = "veritoplama.txt"
-tutarlilik1_file = "tutarlilik1.txt"
+data_file = "data.csv"
+veritoplama_file = "veritoplama.csv"
+tutarlilik1_file = "tutarlilik1.csv"
 
-
+#arayüz ve fonksiyon algoritmaları
 class Arayuz:
     def arayuz(self):
         print(" -- BİLİMSEL YÖNTEM PROG --")
@@ -35,7 +35,7 @@ class Arayuz:
             else:
                 print("Geçersiz giriş. Lütfen (1) veya (q) girin.")
 
-
+#ana class
 class BilimMain:
     def problem(self):
         while True:
@@ -60,10 +60,10 @@ class BilimMain:
         input("Açıklama: ")  # sor kullanilmiyor
 
         gozlem = input("Yapılan gözlem bilgisi: ")
-        deney = input(int("Yapılan deney numarası (başarı puanı 0-10):"))
+        deney = int(input("Yapılan deney numarası (başarı puanı 0-10):"))
         
-        agrup = input(float("A grubunun deneyinde gerçekleşen doğruluk payı(0-100) =")) #yapılan deneyin başarı raporu
-        bgrup = input(float("B grubunun deneyinde gerçekleşen doğruluk payı(0-100) ="))
+        agrup = float(input("A grubunun deneyinde gerçekleşen doğruluk payı(0-100) =")) #yapılan deneyin başarı raporu
+        bgrup = float(input("B grubunun deneyinde gerçekleşen doğruluk payı(0-100) ="))
         sonuchesapla = (agrup + bgrup)/2
         
         """ bunun yapılmasının sebebi iki grubun da deneyin nasıl gerçekleştiğini,doğrulanabilirlik durumunu sınamaktır,
@@ -127,7 +127,8 @@ class BilimMain:
 
         print(" -- Hipotez Kurma --")
         print("""Lütfen her şeyi kesin kurama ulaştıracak şekilde yazınız.her işlemde ve her alanda gerçek sonuçlarla rapor,veri
-              ve benzeri kullanılabilir.ayrıca sayısal veri girmeyiniz tamamen alfabetik olucak şekilde yapınız,ve idda,yorum,tahmin gibi alanlarda rastgele 
+              ve benzeri kullanılabilir.ayrıca sayısal veri girmeyiniz tamamen alfabetik olucak şekilde yapınız,
+              ve idda,yorum,tahmin gibi alanlarda rastgele 
               işlemler yapmayınız herşey mantık alanında olmasına dikkat edin!
               
                  bilimsel tespit = -yanlışlanabilir olması
@@ -181,13 +182,13 @@ class BilimMain:
 
         try:
             df2.to_csv(data_file, index=False)
-            print("data.txt dosyasına kaydedildi")
+            print("data.csv dosyasına kaydedildi")
 
             df.to_csv(veritoplama_file, index=False)
-            print("veritoplama.txt dosyasına kaydedildi")
+            print("veritoplama.csv dosyasına kaydedildi")
 
             df1.to_csv(tutarlilik1_file, index=False)
-            print("tutarlılık1.txt dosyasına kaydedildi")
+            print("tutarlılık1.csv dosyasına kaydedildi")
 
         except Exception as e:
             print(f"Dosya kaydetme hatası: {e}")
