@@ -1,4 +1,7 @@
 import pandas as pd
+import seaborn as sns
+import matplotlib.pylab as plt
+import numpy as np
 import time
 
 # Global veri saklama yapilari
@@ -27,6 +30,7 @@ class Arayuz:
                 bilim.tutarlilik()
                 bilim.hipotez()
                 bilim.sonuc()
+                #bilim.görselveri()
 
             elif sec == "q":
                 print("çıkıldı")
@@ -64,7 +68,9 @@ class BilimMain:
         
         agrup = float(input("A grubunun deneyinde gerçekleşen doğruluk payı(0-100) =")) #yapılan deneyin başarı raporu
         bgrup = float(input("B grubunun deneyinde gerçekleşen doğruluk payı(0-100) ="))
-        sonuchesapla = (agrup + bgrup)/2
+        bgrup2 = float(input("B grubunun 2.deney doğruluk payı(0-100): "))
+        agrup2 = float(input("A grubunun 2.deney doğruluk payı(0-100): "))
+        sonuchesapla = (agrup + bgrup + agrup2 + bgrup2)/4
         
         """ bunun yapılmasının sebebi iki grubun da deneyin nasıl gerçekleştiğini,doğrulanabilirlik durumunu sınamaktır,
         ki bu da aslına bakılırsa oldukça verim alınabilir."""
@@ -79,7 +85,9 @@ class BilimMain:
                 "Hesaplanan Puan": [hesap],
                 "A grubu deney başarısı" : [agrup],
                 "B grubu deney başarısı" : [bgrup],
-                "2 Grubun deney doğruluğu(hesaplanmış)" : [sonuchesapla]
+                "A2 deney başarısı" : [agrup2],
+                "B2 deney başarısı" : [bgrup2],
+                "4 Grubun deney doğruluğu" : [sonuchesapla]
             }
 
             df = pd.DataFrame(veritoplama_data)
@@ -146,31 +154,34 @@ class BilimMain:
         yorum = input("yorumlar:")
         notiste = input("eklenecek not: ")
 
-        data = {
-            "Araştırmayı Yürüten": [yapan],
-            "Ana Düşünce": [ana_dusunce],
-            "Savunma": [savunma],
-            "Araştırma (Kaynak ile)": [arastirma],
-            "Gözlemler": [gozlem],
-            "Tahminler": [tahmin],
-            "Ortaya Atılan İddialar": [idda],
-            "yorumlar" : [yorum],
-            "Notlar" : [notiste]
+        data = pd.DataFrame( {
             
-        }
+                "Araştırmayı Yürüten": [yapan],
+                "Ana Düşünce": [ana_dusunce],
+                "Savunma": [savunma],
+                "Araştırma (Kaynak ile)": [arastirma],
+                "Gözlemler": [gozlem],
+                "Tahminler": [tahmin],
+                "Ortaya Atılan İddialar": [idda],
+                "yorumlar" : [yorum],
+                "Notlar" : [notiste]
+            
+        })
 
         print("Yapılandırılıyor...")
         time.sleep(2.5)
         df = pd.DataFrame(data)
+        #sns.barplot(x="data",data=df) #istenirse kullanılabilir
+        #plt.show()
         print(" -- İnşa Edilen Hipotez Verileri --\n")
         print(df)
 
     def sonuc(self):
         print(" -- Veri Sonucu --")
         
-        #enyuksekdeger = max(tutarlilik_data) ---#çalışabilecek kodlar (opsiyonel)
-        #enkucukdeger = min(tutarlilik_data)
-        #print(enyuksekdeger, enkucukdeger)
+        # enyuksekdeger = max(veritoplama_data) #çalışabilecek kodlar (opsiyonel)
+        # enkucukdeger = min(veritoplama_data)
+        # print(enyuksekdeger, enkucukdeger)
 
         df = pd.DataFrame(veritoplama_data)
         df1 = pd.DataFrame(tutarlilik_data)
@@ -179,6 +190,17 @@ class BilimMain:
         print(df)
         print(df1)
         print(df2)
+        
+        
+        gorsel = pd.read_csv("veritoplama.csv")
+        sns.barplot(x="A grubu deney başarısı", y="B grubu deney başarısı",
+                 width=0.5, data=gorsel)
+        
+        plt.title("A ve B grubu deney başarısı")
+        plt.xlabel("A grubu")
+        plt.ylabel("B grubu ")
+        plt.show()
+        
 
         try:
             df2.to_csv(data_file, index=False)
@@ -194,7 +216,18 @@ class BilimMain:
             print(f"Dosya kaydetme hatası: {e}")
 
         print("Program sona erdirildi...")
-
+    
+    #kullanılması opsiyonel
+    #görsel veri işlemi    
+    #def görselveri(self):
+        #df = pd.DataFrame("veritoplama.csv")
+        
+        #sns.scatterplot(x="A grubu deney başarısı", y="B grubu deney başarısı",data=df)
+        #plt.title("A ve B grubu deney başarısı")
+        #plt.xlabel("A Grubu")
+        #plt.ylabel("B Grubu")
+        #plt.show
+        
 
 if __name__ == "__main__":
     arayuz = Arayuz()
