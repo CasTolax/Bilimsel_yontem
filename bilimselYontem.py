@@ -1,8 +1,9 @@
 import pandas as pd
 import seaborn as sns
 import matplotlib.pylab as plt
-import numpy as np
 import time
+from tqdm import tqdm
+from datetime import datetime
 
 # Global veri saklama yapilari
 veritoplama_data = {}
@@ -30,7 +31,7 @@ class Arayuz:
                 bilim.tutarlilik()
                 bilim.hipotez()
                 bilim.sonuc()
-                #bilim.görselveri()
+                
 
             elif sec == "q":
                 print("çıkıldı")
@@ -167,21 +168,31 @@ class BilimMain:
                 "Notlar" : [notiste]
             
         })
-
+        
+        for i in tqdm(range(100)): # yükleme 
+            time.sleep(0.05)
+        
         print("Yapılandırılıyor...")
         time.sleep(2.5)
-        df = pd.DataFrame(data)
-        #sns.barplot(x="data",data=df) #istenirse kullanılabilir
+        print("yükleme tamamladı")
+        
+        yukleZaman = datetime.now()
+        print("-------------------------")
+        print(f"gerçekleştirilmiş yükleme zamanı = ",yukleZaman)
+        print("-------------------------")
+        
+         
+        df = pd.DataFrame(data) # data 
+        
+        #sns.barplot(x="data",data=df) #istenirse kullanılabilir (opsiyonel kullanım)
         #plt.show()
+        
         print(" -- İnşa Edilen Hipotez Verileri --\n")
         print(df)
 
     def sonuc(self):
+        print("--------------------------------------------------------------------------------------------")
         print(" -- Veri Sonucu --")
-        
-        # enyuksekdeger = max(veritoplama_data) #çalışabilecek kodlar (opsiyonel)
-        # enkucukdeger = min(veritoplama_data)
-        # print(enyuksekdeger, enkucukdeger)
 
         df = pd.DataFrame(veritoplama_data)
         df1 = pd.DataFrame(tutarlilik_data)
@@ -190,19 +201,30 @@ class BilimMain:
         print(df)
         print(df1)
         print(df2)
+        print("--------------------------------------------------------------------------------------------")
         
         
-        gorsel = pd.read_csv("veritoplama.csv")
-        sns.barplot(x="A grubu deney başarısı", y="B grubu deney başarısı",
-                 width=0.5, data=gorsel)
         
-        plt.title("A ve B grubu deney başarısı")
-        plt.xlabel("A grubu")
-        plt.ylabel("B grubu ")
+        veri = pd.DataFrame({
+            "Grup" : ["a1","b1","a2","b2",],
+            "başarı" : [
+                df["A grubu deney başarısı"][0],
+                df["B grubu deney başarısı"][0],
+                df["A2 deney başarısı"][0],
+                df["B2 deney başarısı"][0]
+                #df["4 Grubun deney doğruluğu"]
+            ]
+        })
+        
+        sns.barplot(x="Grup",y="başarı", data=veri,width=0.5)
+        plt.title("A,B ve 4 Grubun başarı puanları")
+        plt.xlabel("Deney grupları")
+        plt.ylabel("başarı puanı (0-100)")
         plt.show()
         
 
         try:
+            
             df2.to_csv(data_file, index=False)
             print("data.csv dosyasına kaydedildi")
 
@@ -217,18 +239,6 @@ class BilimMain:
 
         print("Program sona erdirildi...")
     
-    #kullanılması opsiyonel
-    #görsel veri işlemi    
-    #def görselveri(self):
-        #df = pd.DataFrame("veritoplama.csv")
-        
-        #sns.scatterplot(x="A grubu deney başarısı", y="B grubu deney başarısı",data=df)
-        #plt.title("A ve B grubu deney başarısı")
-        #plt.xlabel("A Grubu")
-        #plt.ylabel("B Grubu")
-        #plt.show
-        
-
 if __name__ == "__main__":
     arayuz = Arayuz()
     arayuz.arayuz()
